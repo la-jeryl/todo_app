@@ -1,4 +1,4 @@
-defmodule ClientWeb.PageController do
+defmodule ClientWeb.TodoListController do
   use ClientWeb, :controller
 
   def index(conn, _params) do

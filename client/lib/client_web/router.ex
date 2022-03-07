@@ -14,10 +14,10 @@ defmodule ClientWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ClientWeb do
+  scope "/todo-list", ClientWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", TodoListController, :index
   end
 
   # Other scopes may use custom stacks.
