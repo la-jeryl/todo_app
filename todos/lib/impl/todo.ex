@@ -74,9 +74,9 @@ defmodule Todos.Impl.Todo do
              true <- Map.get(todo, :priority) != nil do
           # check if proposed priority value is within valid range
           proposed_priority_value = Map.get(todo, :priority)
-          current_record_count = current_todos_count()
+          latest_todos_count = latest_todos_count()
 
-          if proposed_priority_value in 1..current_record_count do
+          if proposed_priority_value in 1..latest_todos_count do
             # Could return {:ok, struct} or {:error, changeset}
             inserted_todo =
               %Todo{}
