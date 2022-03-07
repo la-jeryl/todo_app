@@ -3,16 +3,102 @@ defmodule Todos do
   Documentation for `Todos`.
   """
 
+  alias Todos.Impl.Todo
+
+  @opaque todo :: Todo.t()
+
   @doc """
-  Hello world.
+  Create a new todo.
 
   ## Examples
 
-      iex> Todos.hello()
-      :world
-
+      iex> Todos.create_todo(%{
+          description: "writing a book"
+        })
+      : {:ok,
+        %Todos.Todo{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+          description: "writing a book",
+          id: 11,
+          is_done: false,
+          priority: 7
+        }}
   """
-  def hello do
-    :world
-  end
+  @spec create_todo(todo()) :: {:ok, todo} | {:error, any}
+  defdelegate create_todo(todo), to: Todo
+
+  @doc """
+  Get a todo based on its priority.
+
+  ## Examples
+
+      iex> Todos.get_todo_by_priority(7)
+      : {:ok,
+        %Todos.Todo{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+          description: "writing a book",
+          id: 11,
+          is_done: false,
+          priority: 7
+        }}
+  """
+  @spec get_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
+  defdelegate get_todo_by_priority(priority), to: Todo
+
+  @doc """
+  Get all todos.
+
+  ## Examples
+
+      iex> Todos.get_all_todos
+      : [..., {:ok,
+        %Todos.Todo{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+          description: "writing a book",
+          id: 11,
+          is_done: false,
+          priority: 7
+        }}]
+  """
+  @spec get_all_todos :: {:ok, Enum.t(todo())} | {:error, any}
+  defdelegate get_all_todos, to: Todo
+
+  @doc """
+  Update a todo.
+
+  ## Examples
+
+      iex> Todos.update_todo(todo, %{
+          description: "ride my road bike",
+          priority: 1
+        })
+      : {:ok,
+        %Todos.Todo{
+          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+          description: "eat breakfast",
+          id: 11,
+          is_done: false,
+          priority: 1
+        }}
+  """
+  @spec update_todo(todo(), MapSet.t(todo())) :: {:ok, todo} | {:error, any}
+  defdelegate update_todo(todo, attrs), to: Todo
+
+  @doc """
+  Delete a todo.
+
+  ## Examples
+
+      iex> Todos.get_todo_by_priority(7)
+      : {:ok,
+        %Todos.Todo{
+          __meta__: #Ecto.Schema.Metadata<:deleted, "todos">,
+          description: "listening to music",
+          id: 7,
+          is_done: false,
+          priority: 7
+        }}
+  """
+  @spec delete_todo(todo) :: {:ok, todo} | {:error, any}
+  defdelegate delete_todo(todo), to: Todo
 end

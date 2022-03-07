@@ -17,7 +17,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec get_all_todos :: {:ok, any} | {:error, any}
+  @spec get_all_todos :: {:ok, Enum.t(__MODULE__.t())} | {:error, any}
   def get_all_todos do
     try do
       result =
@@ -111,12 +111,9 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo(__MODULE__.t(), any) :: {:ok, any} | {:error, any}
+  @spec update_todo(__MODULE__.t(), MapSet.t(__MODULE__.t())) :: {:ok, any} | {:error, any}
   def update_todo(todo, attrs) do
     try do
-      # split the attrs map into two: priority and non-priority
-      # {priority, others} = Map.split(attrs, [:priority])
-
       result =
         with true <- Map.has_key?(attrs, :priority),
              true <- Map.get(attrs, :priority) != nil do
