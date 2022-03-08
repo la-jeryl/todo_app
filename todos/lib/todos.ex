@@ -94,20 +94,20 @@ defmodule Todos do
   defdelegate update_todo(todo, attrs), to: Todo
 
   @doc """
-  Delete a todo.
+  Delete a todo based on priority.
 
   ## Examples
 
-      iex> Todos.get_todo_by_priority(7)
+      iex> Todos.delete_todo_by_priority(7)
       : {:ok,
         %Todos.Todo{
           __meta__: #Ecto.Schema.Metadata<:deleted, "todos">,
-          description: "listening to music",
-          id: 7,
+          description: "apple",
+          id: 21,
           is_done: false,
-          priority: 7
+          priority: 10
         }}
   """
-  @spec delete_todo(todo) :: {:ok, todo} | {:error, any}
-  defdelegate delete_todo(todo), to: Todo
+  @spec delete_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
+  defdelegate delete_todo_by_priority(priority), to: Todo
 end

@@ -155,8 +155,6 @@ defmodule Todos.Impl.Todo do
 
   @spec delete_todo(__MODULE__.t()) :: {:ok, any} | {:error, any}
   def delete_todo(todo) do
-    todo = todo |> key_to_atom()
-
     try do
       result = Repo.delete(todo)
 
@@ -165,6 +163,19 @@ defmodule Todos.Impl.Todo do
 
       # Could return {:ok, struct} or {:error, changeset}
       result
+    catch
+      error -> {:error, error}
+    end
+  end
+
+  ######################################################################
+
+  @spec delete_todo_by_priority(integer()) :: {:ok, any} | {:error, any}
+  def delete_todo_by_priority(priority) do
+    try do
+      {:ok, todo} = get_todo_by_priority(priority)
+      IO.inspect(todo)
+      delete_todo(todo)
     catch
       error -> {:error, error}
     end
