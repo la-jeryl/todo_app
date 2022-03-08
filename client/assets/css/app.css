@@ -1,8 +1,11 @@
-/* This file is for your main application CSS */
-@tailwind base;
+@import "tailwindcss/base";
 
-@tailwind components;
+@import "tailwindcss/components";
 
-@tailwind utilities;
+@import "tailwindcss/utilities";
 
-/* @import "./components/buttons.css"; */
+@import "./components/header.css";
+
+@import "./components/buttons.css";
+
+
