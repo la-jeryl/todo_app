@@ -51,14 +51,23 @@ defmodule Todos do
   ## Examples
 
       iex> Todos.get_all_todos
-      : [..., {:ok,
-        %Todos.Todo{
-          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-          description: "writing a book",
-          id: 11,
-          is_done: false,
-          priority: 7
-        }}]
+      : {:ok,
+        [
+          %Todos.Todo{
+            __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+            description: "testing",
+            id: 13,
+            is_done: false,
+            priority: 1
+          },
+          %Todos.Todo{
+            __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
+            description: "writing code",
+            id: 12,
+            is_done: false,
+            priority: 2
+          }
+        ]}
   """
   @spec get_all_todos :: {:ok, Enum.t(todo())} | {:error, any}
   defdelegate get_all_todos, to: Todo
