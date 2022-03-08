@@ -32,6 +32,15 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :todos, Todos.Repo,
+  database: "todos_repo",
+  username: "jeryl",
+  password: "testing",
+  hostname: "localhost"
+
+config :todos,
+  ecto_repos: [Todos.Repo]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
