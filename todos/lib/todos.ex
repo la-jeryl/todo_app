@@ -28,7 +28,7 @@ defmodule Todos do
   defdelegate create_todo(todo), to: Todo
 
   @doc """
-  Get a todo based on its priority.
+  Get a todo based on priority.
 
   ## Examples
 
@@ -73,25 +73,24 @@ defmodule Todos do
   defdelegate get_all_todos, to: Todo
 
   @doc """
-  Update a todo.
+  Update a todo based on priority.
 
   ## Examples
 
-      iex> Todos.update_todo(todo, %{
-          description: "ride my road bike",
-          priority: 1
+      iex> Todos.update_todo_by_priority(1, %{
+          is_done: true
         })
       : {:ok,
         %Todos.Todo{
           __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
           description: "eat breakfast",
           id: 11,
-          is_done: false,
+          is_done: true,
           priority: 1
         }}
   """
-  @spec update_todo(todo(), MapSet.t(todo())) :: {:ok, todo} | {:error, any}
-  defdelegate update_todo(todo, attrs), to: Todo
+  @spec update_todo_by_priority(integer(), MapSet.t(todo())) :: {:ok, todo} | {:error, any}
+  defdelegate update_todo_by_priority(priority, attrs), to: Todo
 
   @doc """
   Delete a todo based on priority.
