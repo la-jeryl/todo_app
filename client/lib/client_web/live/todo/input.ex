@@ -2,21 +2,16 @@ defmodule ClientWeb.Live.Todo.Input do
   use ClientWeb, :live_component
 
   def mount(socket) do
-    {:ok, todo_list} = Todos.get_all_todos()
-    {:ok, assign(socket, todos: todo_list)}
+    {:ok, socket}
   end
 
   def render(assigns) do
     ~H"""
-    <div class="live-todo-input">
-      <div class="mb-4">
-        <div class="flex mt-4">
-          <input class="input-todo"
-            placeholder="Add Todo">
-          <button
-            class="btn-add">Add</button>
-        </div>
-      </div>
+    <div id="live-todo-input">
+      <form action="#" phx-submit="create-todo" class="flex mt-4 mb-4">
+        <%= text_input :todo, "description", placeholder: "Add todo",  class: "input-todo" %>
+        <%= submit "Add", class: "btn-add" %>
+      </form>
     </div>
     """
   end

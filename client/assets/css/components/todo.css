@@ -1,3 +1,7 @@
+.todo-description-priority {
+    @apply w-12 text-gray-500
+}
+
 .todo-description-default {
     @apply w-full text-gray-500
 }
