@@ -14,7 +14,7 @@ defmodule ClientWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/todo-list", ClientWeb do
+  scope "/", ClientWeb do
     pipe_through :browser
 
     get "/", TodoListController, :index
