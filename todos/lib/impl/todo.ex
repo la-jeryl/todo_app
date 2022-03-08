@@ -68,8 +68,6 @@ defmodule Todos.Impl.Todo do
 
   @spec create_todo(__MODULE__.t()) :: {:ok, any} | {:error, any}
   def create_todo(todo) do
-    todo = todo |> key_to_atom
-
     try do
       result =
         with true <- Map.has_key?(todo, :priority),
@@ -113,11 +111,8 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo(__MODULE__.t(), MapSet.t(__MODULE__.t())) :: {:ok, any} | {:error, any}
+  @spec update_todo(__MODULE__.t(), MapSet.t()) :: {:ok, any} | {:error, any}
   def update_todo(todo, attrs) do
-    todo = todo |> key_to_atom()
-    attrs = attrs |> key_to_atom()
-
     try do
       result =
         with true <- Map.has_key?(attrs, :priority),
@@ -174,7 +169,8 @@ defmodule Todos.Impl.Todo do
   def delete_todo_by_priority(priority) do
     try do
       {:ok, todo} = get_todo_by_priority(priority)
-      IO.inspect(todo)
+
+      # Could return {:ok, struct} or {:error, changeset}
       delete_todo(todo)
     catch
       error -> {:error, error}
@@ -182,16 +178,6 @@ defmodule Todos.Impl.Todo do
   end
 
   ######################################################################
-
-  defp key_to_atom(map) do
-    Enum.reduce(map, %{}, fn
-      # String.to_existing_atom saves us from overloading the VM by
-      # creating too many atoms. It'll always succeed because all the fields
-      # in the database already exist as atoms at runtime.
-      {key, value}, acc when is_atom(key) -> Map.put(acc, key, value)
-      {key, value}, acc when is_binary(key) -> Map.put(acc, String.to_existing_atom(key), value)
-    end)
-  end
 
   defp reset_todos_priorities(todo_list) do
     todo_list
