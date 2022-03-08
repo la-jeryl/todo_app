@@ -17,7 +17,8 @@ defmodule ClientWeb.Router do
   scope "/", ClientWeb do
     pipe_through :browser
 
-    get "/", TodoListController, :index
+    # get "/", TodoListController, :index
+    live "/", Live.Todo, :index
   end
 
   # Other scopes may use custom stacks.
