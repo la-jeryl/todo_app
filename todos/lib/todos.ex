@@ -15,14 +15,7 @@ defmodule Todos do
       iex> Todos.create_todo(%{
           description: "writing a book"
         })
-      : {:ok,
-        %Todos.Todo{
-          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-          description: "writing a book",
-          id: 11,
-          is_done: false,
-          priority: 7
-        }}
+      : {:ok, %{description: "writing a book", is_done: false, priority: 6}}
   """
   @spec create_todo(todo()) :: {:ok, todo} | {:error, any}
   defdelegate create_todo(todo), to: Todo
@@ -32,15 +25,8 @@ defmodule Todos do
 
   ## Examples
 
-      iex> Todos.get_todo_by_priority(7)
-      : {:ok,
-        %Todos.Todo{
-          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-          description: "writing a book",
-          id: 11,
-          is_done: false,
-          priority: 7
-        }}
+      iex> Todos.get_todo_by_priority(6)
+      : {:ok, %{description: "writing a book", is_done: false, priority: 6}}
   """
   @spec get_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
   defdelegate get_todo_by_priority(priority), to: Todo
@@ -53,20 +39,11 @@ defmodule Todos do
       iex> Todos.get_all_todos
       : {:ok,
         [
-          %Todos.Todo{
-            __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-            description: "testing",
-            id: 13,
-            is_done: false,
-            priority: 1
-          },
-          %Todos.Todo{
-            __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-            description: "writing code",
-            id: 12,
-            is_done: false,
-            priority: 2
-          }
+          %{description: "eat midnight snacks :) ", is_done: false, priority: 1},
+          %{description: "orange", is_done: false, priority: 2},
+          %{description: "hello", is_done: false, priority: 3},
+          %{description: "ride a bike", is_done: false, priority: 4},
+          %{description: "eat apple", is_done: false, priority: 5}
         ]}
   """
   @spec get_all_todos :: {:ok, Enum.t(todo())} | {:error, any}
@@ -77,17 +54,8 @@ defmodule Todos do
 
   ## Examples
 
-      iex> Todos.update_todo_by_priority(1, %{
-          is_done: true
-        })
-      : {:ok,
-        %Todos.Todo{
-          __meta__: #Ecto.Schema.Metadata<:loaded, "todos">,
-          description: "eat breakfast",
-          id: 11,
-          is_done: true,
-          priority: 1
-        }}
+      iex> Todos.update_todo_by_priority( 6, %{description: "eat healthy food", priority: 1})
+      : {:ok, %{description: "eat healthy food", is_done: false, priority: 1}}
   """
   @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, todo} | {:error, any}
   defdelegate update_todo_by_priority(priority, attrs), to: Todo
@@ -97,15 +65,8 @@ defmodule Todos do
 
   ## Examples
 
-      iex> Todos.delete_todo_by_priority(7)
-      : {:ok,
-        %Todos.Todo{
-          __meta__: #Ecto.Schema.Metadata<:deleted, "todos">,
-          description: "apple",
-          id: 21,
-          is_done: false,
-          priority: 10
-        }}
+      iex> Todos.delete_todo_by_priority(2)
+      : {:ok, %{description: "eat apple", is_done: false, priority: 2}}
   """
   @spec delete_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
   defdelegate delete_todo_by_priority(priority), to: Todo

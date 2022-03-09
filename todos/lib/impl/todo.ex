@@ -24,24 +24,8 @@ defmodule Todos.Impl.Todo do
         from(item in Todo, order_by: [asc: :priority])
         |> Repo.all()
 
-      {:ok, result}
-    catch
-      error -> {:error, error}
-    end
-  end
-
-  ######################################################################
-
-  @spec get_todo_by_id(integer()) :: {:ok, any} | {:error, any}
-  def get_todo_by_id(id) do
-    try do
-      result = Repo.get(Todo, id)
-
-      with true <- result != nil do
-        {:ok, result}
-      else
-        _ -> {:error, "Todo not found"}
-      end
+      sanitized_result = Enum.map(result, fn item -> sanitize_todo(item) end)
+      {:ok, sanitized_result}
     catch
       error -> {:error, error}
     end
@@ -55,7 +39,7 @@ defmodule Todos.Impl.Todo do
       result = Repo.get_by(Todo, priority: priority_value)
 
       with true <- result != nil do
-        {:ok, result}
+        {:ok, sanitize_todo(result)}
       else
         _ -> {:error, "Todo not found"}
       end
@@ -103,7 +87,10 @@ defmodule Todos.Impl.Todo do
         end
 
       # Could return {:ok, struct} or {:error, changeset}
-      result
+      case result do
+        {:ok, result} -> {:ok, sanitize_todo(result)}
+        {:error, reason} -> {:error, reason}
+      end
     catch
       error -> {:error, error}
     end
@@ -140,7 +127,10 @@ defmodule Todos.Impl.Todo do
         end
 
       # Could return {:ok, struct} or {:error, changeset}
-      result
+      case result do
+        {:ok, result} -> {:ok, sanitize_todo(result)}
+        {:error, reason} -> {:error, reason}
+      end
     catch
       error -> {:error, error}
     end
@@ -151,10 +141,13 @@ defmodule Todos.Impl.Todo do
   @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, any} | {:error, any}
   def update_todo_by_priority(priority, attrs) do
     try do
-      {:ok, todo} = get_todo_by_priority(priority)
+      {:ok, todo} = get_todo_by_priority_raw(priority)
 
       # Could return {:ok, struct} or {:error, changeset}
-      update_todo(todo, attrs)
+      case update_todo(todo, attrs) do
+        {:ok, result} -> {:ok, sanitize_todo(result)}
+        {:error, reason} -> {:error, reason}
+      end
     catch
       error -> {:error, error}
     end
@@ -167,11 +160,14 @@ defmodule Todos.Impl.Todo do
     try do
       result = Repo.delete(todo)
 
-      {:ok, todo_list} = get_all_todos()
+      {:ok, todo_list} = get_all_todos_raw()
       reset_todos_priorities(todo_list)
 
       # Could return {:ok, struct} or {:error, changeset}
-      result
+      case result do
+        {:ok, result} -> {:ok, sanitize_todo(result)}
+        {:error, reason} -> {:error, reason}
+      end
     catch
       error -> {:error, error}
     end
@@ -182,16 +178,53 @@ defmodule Todos.Impl.Todo do
   @spec delete_todo_by_priority(integer()) :: {:ok, any} | {:error, any}
   def delete_todo_by_priority(priority) do
     try do
-      {:ok, todo} = get_todo_by_priority(priority)
+      {:ok, todo} = get_todo_by_priority_raw(priority)
 
       # Could return {:ok, struct} or {:error, changeset}
-      delete_todo(todo)
+      case delete_todo(todo) do
+        {:ok, result} -> {:ok, sanitize_todo(result)}
+        {:error, reason} -> {:error, reason}
+      end
     catch
       error -> {:error, error}
     end
   end
 
   ######################################################################
+
+  defp sanitize_todo(result) do
+    %{
+      priority: result.priority,
+      description: result.description,
+      is_done: result.is_done
+    }
+  end
+
+  defp get_all_todos_raw do
+    try do
+      result =
+        from(item in Todo, order_by: [asc: :priority])
+        |> Repo.all()
+
+      {:ok, result}
+    catch
+      error -> {:error, error}
+    end
+  end
+
+  defp get_todo_by_priority_raw(priority_value) do
+    try do
+      result = Repo.get_by(Todo, priority: priority_value)
+
+      with true <- result != nil do
+        {:ok, result}
+      else
+        _ -> {:error, "Todo not found"}
+      end
+    catch
+      error -> {:error, error}
+    end
+  end
 
   defp reset_todos_priorities(todo_list) do
     todo_list
@@ -204,7 +237,7 @@ defmodule Todos.Impl.Todo do
   end
 
   defp move_todo(%Todo{} = todo, proposed_priority_value) do
-    {:ok, todo_list} = get_all_todos()
+    {:ok, todo_list} = get_all_todos_raw()
 
     current_todo_index = todo_list |> Enum.find_index(&(&1.id == todo.id))
 
