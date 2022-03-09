@@ -99,7 +99,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo(__MODULE__.t(), MapSet.t(Type.todo())) :: {:ok, Type.todo()} | {:error, any}
+  @spec update_todo(__MODULE__.t(), MapSet.t(any)) :: {:ok, Type.todo()} | {:error, any}
   def update_todo(todo, attrs) do
     try do
       result =
@@ -139,8 +139,9 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo_by_priority(integer(), MapSet.t(Type.todo())) ::
-          {:ok, Type.todo()} | {:error, any}
+  # @spec update_todo_by_priority(integer(), MapSet.t(any)) ::
+  #         {:ok, Type.todo()} | {:error, any}
+  @spec update_todo_by_priority(integer(), any) :: {:ok, Type.todo()} | {:error, any}
   def update_todo_by_priority(priority, attrs) do
     try do
       {:ok, todo} = get_todo_by_priority_raw(priority)
