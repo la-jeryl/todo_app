@@ -89,7 +89,7 @@ defmodule Todos do
           priority: 1
         }}
   """
-  @spec update_todo_by_priority(integer(), MapSet.t(todo())) :: {:ok, todo} | {:error, any}
+  @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, todo} | {:error, any}
   defdelegate update_todo_by_priority(priority, attrs), to: Todo
 
   @doc """
