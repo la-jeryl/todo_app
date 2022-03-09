@@ -4,8 +4,9 @@ defmodule Todos do
   """
 
   alias Todos.Impl.Todo
+  alias Todos.Type
 
-  @opaque todo :: Todo.t()
+  @type todo :: Type.todo()
 
   @doc """
   Create a new todo.
@@ -57,7 +58,7 @@ defmodule Todos do
       iex> Todos.update_todo_by_priority( 6, %{description: "eat healthy food", priority: 1})
       : {:ok, %{description: "eat healthy food", is_done: false, priority: 1}}
   """
-  @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, todo()} | {:error, any}
+  @spec update_todo_by_priority(integer(), MapSet.t(any)) :: {:ok, todo()} | {:error, any}
   defdelegate update_todo_by_priority(priority, attrs), to: Todo
 
   @doc """

@@ -2,6 +2,7 @@ defmodule Todos.Impl.Todo do
   import Ecto.Query, warn: false
   alias Todos.Repo
   alias Todos.Todo
+  alias Todos.Type
 
   @type t :: %__MODULE__{
           priority: integer(),
@@ -17,7 +18,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec get_all_todos :: {:ok, Enum.t(__MODULE__.t())} | {:error, any}
+  @spec get_all_todos :: {:ok, Enum.t(Type.todo())} | {:error, any}
   def get_all_todos do
     try do
       result =
@@ -33,7 +34,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec get_todo_by_priority(integer()) :: {:ok, any} | {:error, any}
+  @spec get_todo_by_priority(integer()) :: {:ok, Type.todo()} | {:error, any}
   def get_todo_by_priority(priority_value) do
     try do
       result = Repo.get_by(Todo, priority: priority_value)
@@ -50,7 +51,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec create_todo(__MODULE__.t()) :: {:ok, any} | {:error, any}
+  @spec create_todo(Type.todo()) :: {:ok, Type.todo()} | {:error, any}
   def create_todo(todo) do
     try do
       result =
@@ -98,7 +99,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo(__MODULE__.t(), MapSet.t()) :: {:ok, any} | {:error, any}
+  @spec update_todo(__MODULE__.t(), MapSet.t(Type.todo())) :: {:ok, Type.todo()} | {:error, any}
   def update_todo(todo, attrs) do
     try do
       result =
@@ -138,7 +139,8 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, any} | {:error, any}
+  @spec update_todo_by_priority(integer(), MapSet.t(Type.todo())) ::
+          {:ok, Type.todo()} | {:error, any}
   def update_todo_by_priority(priority, attrs) do
     try do
       {:ok, todo} = get_todo_by_priority_raw(priority)
@@ -155,7 +157,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec delete_todo(__MODULE__.t()) :: {:ok, any} | {:error, any}
+  @spec delete_todo(__MODULE__.t()) :: {:ok, Type.todo()} | {:error, any}
   def delete_todo(todo) do
     try do
       result = Repo.delete(todo)
@@ -175,7 +177,7 @@ defmodule Todos.Impl.Todo do
 
   ######################################################################
 
-  @spec delete_todo_by_priority(integer()) :: {:ok, any} | {:error, any}
+  @spec delete_todo_by_priority(integer()) :: {:ok, Type.todo()} | {:error, any}
   def delete_todo_by_priority(priority) do
     try do
       {:ok, todo} = get_todo_by_priority_raw(priority)
