@@ -17,7 +17,7 @@ defmodule Todos do
         })
       : {:ok, %{description: "writing a book", is_done: false, priority: 6}}
   """
-  @spec create_todo(todo()) :: {:ok, todo} | {:error, any}
+  @spec create_todo(todo()) :: {:ok, todo()} | {:error, any}
   defdelegate create_todo(todo), to: Todo
 
   @doc """
@@ -28,7 +28,7 @@ defmodule Todos do
       iex> Todos.get_todo_by_priority(6)
       : {:ok, %{description: "writing a book", is_done: false, priority: 6}}
   """
-  @spec get_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
+  @spec get_todo_by_priority(integer()) :: {:ok, todo()} | {:error, any}
   defdelegate get_todo_by_priority(priority), to: Todo
 
   @doc """
@@ -57,7 +57,7 @@ defmodule Todos do
       iex> Todos.update_todo_by_priority( 6, %{description: "eat healthy food", priority: 1})
       : {:ok, %{description: "eat healthy food", is_done: false, priority: 1}}
   """
-  @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, todo} | {:error, any}
+  @spec update_todo_by_priority(integer(), MapSet.t()) :: {:ok, todo()} | {:error, any}
   defdelegate update_todo_by_priority(priority, attrs), to: Todo
 
   @doc """
@@ -68,6 +68,6 @@ defmodule Todos do
       iex> Todos.delete_todo_by_priority(2)
       : {:ok, %{description: "eat apple", is_done: false, priority: 2}}
   """
-  @spec delete_todo_by_priority(integer()) :: {:ok, todo} | {:error, any}
+  @spec delete_todo_by_priority(integer()) :: {:ok, todo()} | {:error, any}
   defdelegate delete_todo_by_priority(priority), to: Todo
 end
