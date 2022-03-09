@@ -13,10 +13,17 @@ defmodule ClientWeb.Live.Todo.List do
           <p class="todo-description-priority">
             <%= todo.priority %>)
           </p>
-          <p class="todo-description-default">
-            <%= todo.description %>
-          </p>
-          <button class="btn-done" phx-click="done-todo" phx-value-priority={todo.priority}>Done</button>
+          <%= if todo.is_done == true do %>
+            <p class="todo-description-default">
+              <%= todo.description %>
+            </p>
+            <button class="btn-done" phx-click="done-todo" phx-value-priority={todo.priority}>Done</button>
+          <% else %>
+            <p class="todo-description-done">
+              <%= todo.description %>
+            </p>
+            <button class="btn-not-done" phx-click="not-done-todo" phx-value-priority={todo.priority}>Not Done</button>
+          <% end %>
           <button class="btn-remove" phx-click="delete-todo" phx-value-priority={todo.priority}>Remove</button>
         </div>
       <% end %>
